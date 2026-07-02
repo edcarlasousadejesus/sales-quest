@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.idea/
+app/__pycache__/
+app/sales_quest.db

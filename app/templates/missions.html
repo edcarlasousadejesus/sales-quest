@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Missões - Sales Quest{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Missões</h1>
+    <p class="page-subtitle">Complete desafios e ganhe muito XP.</p>
+</div>
+<div class="card mb-2">
+    <div class="card-header">
+        <h3 class="card-title">Missões Ativas</h3>
+    </div>
+    <div class="grid-2" id="activeMissionsGrid">
+        <div class="text-center text-muted py-2" style="grid-column: 1 / -1;">Carregando missões...</div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Missões Concluídas</h3>
+    </div>
+    <div class="grid-2" id="completedMissionsGrid">
+        <div class="text-center text-muted py-2" style="grid-column: 1 / -1;">Nenhuma missão concluída ainda.</div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/missions.js"></script>
+<script>
+    app.requireAuth();
+    document.getElementById('nav-missions').classList.add('active');
+</script>
+{% endblock %}

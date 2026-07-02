@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Clientes - Sales Quest{% endblock %}
+{% block content %}
+<div class="page-header flex-between">
+    <div>
+        <h1>Clientes</h1>
+        <p class="page-subtitle">Gerencie sua carteira de clientes.</p>
+    </div>
+    <button class="btn btn-primary" onclick="openClientModal()">
+        <i class='bx bx-user-plus'></i> Novo Cliente
+    </button>
+</div>
+<div class="card">
+    <div class="search-bar">
+        <div class="input-wrapper" style="flex: 1;">
+            <i class='bx bx-search input-icon'></i>
+            <input type="text" id="searchInput" class="form-input" placeholder="Buscar por nome, email ou telefone..." onkeyup="debounceSearch()">
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Contato</th>
+                    <th>Endereço</th>
+                    <th>Total Vendas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="clientsTableBody">
+                <tr><td colspan="5" class="text-center">Carregando clientes...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Cliente -->
+<div class="modal-overlay" id="clientModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modalTitle">Novo Cliente</h3>
+            <button class="modal-close" onclick="closeClientModal()"><i class='bx bx-x'></i></button>
+        </div>
+        <form id="clientForm" onsubmit="saveClient(event)">
+            <input type="hidden" id="clientId">
+
+            <div class="form-group">
+                <label>Nome *</label>
+                <div class="input-wrapper">
+                    <i class='bx bx-user input-icon'></i>
+                    <input type="text" id="clientName" class="form-input" required minlength="2">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-envelope input-icon'></i>
+                        <input type="email" id="clientEmail" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-phone input-icon'></i>
+                        <input type="tel" id="clientPhone" class="form-input" placeholder="(11) 99999-9999">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Endereço</label>
+                <div class="input-wrapper">
+                    <i class='bx bx-map input-icon'></i>
+                    <input type="text" id="clientAddress" class="form-input">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Notas / Observações</label>
+                <textarea id="clientNotes" class="form-input" rows="3"></textarea>
+            </div>
+            <div class="flex-gap mt-2">
+                <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeClientModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" style="flex: 2;">
+                    <i class='bx bx-save'></i> Salvar Cliente
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/clients.js"></script>
+<script>
+    app.requireAuth();
+    document.getElementById('nav-clients').classList.add('active');
+</script>
+{% endblock %}

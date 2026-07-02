@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Conquistas - Sales Quest{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Conquistas</h1>
+    <p class="page-subtitle">Desbloqueie medalhas exclusivas e mostre seu talento.</p>
+</div>
+<div class="card">
+    <div class="flex-between mb-2">
+        <h3 class="card-title">Todas as Conquistas</h3>
+        <div class="text-secondary" style="font-size: 0.9rem;">
+            Progresso: <span id="achievementsProgress" class="text-gold fw-700">0/0</span>
+        </div>
+    </div>
+
+    <div class="achievements-grid" id="achievementsGrid">
+        <div class="text-center text-muted py-2" style="grid-column: 1 / -1;">Carregando conquistas...</div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/achievements.js"></script>
+<script>
+    app.requireAuth();
+    document.getElementById('nav-achievements').classList.add('active');
+</script>
+{% endblock %}
+@app.get("/achievements", response_class=HTMLResponse)
+async def page_achievements(request: Request):
+    return templates.TemplateResponse(request, "achievements.html", {"request": request})

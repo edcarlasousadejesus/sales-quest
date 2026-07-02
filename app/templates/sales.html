@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Vendas - Sales Quest{% endblock %}
+{% block content %}
+<div class="page-header flex-between">
+    <div>
+        <h1>Vendas</h1>
+        <p class="page-subtitle">Cadastre novas vendas e ganhe XP!</p>
+    </div>
+    <button class="btn btn-primary" onclick="openSaleModal()">
+        <i class='bx bx-plus'></i> Cadastrar Venda
+    </button>
+</div>
+<div class="card">
+    <div class="search-bar">
+        <div class="input-wrapper" style="flex: 1; min-width: 250px;">
+            <i class='bx bx-search input-icon'></i>
+            <input type="text" id="searchInput" class="form-input" placeholder="Buscar produto..." onkeyup="debounceSearch()">
+        </div>
+
+        <div class="input-wrapper" style="flex: 1; min-width: 200px;">
+            <select id="categoryFilter" class="form-input" onchange="loadSales()">
+                <option value="">Todas as Categorias</option>
+                <!-- Preenchido via JS -->
+            </select>
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Produto / Categoria</th>
+                    <th>Cliente</th>
+                    <th>Qtd</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody id="salesTableBody">
+                <tr><td colspan="5" class="text-center">Carregando vendas...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Venda -->
+<div class="modal-overlay" id="saleModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Cadastrar Venda</h3>
+            <button class="modal-close" onclick="closeSaleModal()"><i class='bx bx-x'></i></button>
+        </div>
+        <form id="saleForm" onsubmit="saveSale(event)">
+
+            <div class="form-group">
+                <label>Cliente</label>
+                <select id="saleClient" class="form-input">
+                    <option value="">(Sem cliente vinculado)</option>
+                    <!-- Preenchido via JS -->
+                </select>
+                <div style="font-size: 0.8rem; margin-top: 5px;" class="text-secondary">
+                    Vincule a venda a um cliente para cumprir missões e acompanhar histórico.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Produto / Serviço *</label>
+                <div class="input-wrapper">
+                    <i class='bx bx-package input-icon'></i>
+                    <input type="text" id="saleProduct" class="form-input" required minlength="2">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Categoria *</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-category input-icon'></i>
+                        <input type="text" id="saleCategory" class="form-input" required list="categoriesList">
+                        <datalist id="categoriesList">
+                            <!-- Preenchido via JS -->
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantidade *</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="saleQuantity" class="form-input" required min="1" value="1" style="padding-left: 1rem;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Valor Unitário (R$) *</label>
+                <div class="input-wrapper">
+                    <i class='bx bx-money input-icon'></i>
+                    <input type="number" id="saleValue" class="form-input" required min="0.01" step="0.01">
+                </div>
+            </div>
+            <div class="flex-gap mt-2">
+                <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeSaleModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" style="flex: 2;">
+                    <i class='bx bx-check'></i> Concluir Venda
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/sales.js"></script>
+<script>
+    app.requireAuth();
+    document.getElementById('nav-sales').classList.add('active');
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Ranking - Sales Quest{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Ranking Geral</h1>
+    <p class="page-subtitle">Os melhores vendedores da plataforma.</p>
+</div>
+<div id="podium-container">
+    <!-- Pódio gerado via JS -->
+    <div class="text-center text-muted py-2">Carregando ranking...</div>
+</div>
+<div class="card mt-2">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 60px; text-align: center;">Pos</th>
+                    <th>Vendedor</th>
+                    <th>Nível</th>
+                    <th style="text-align: right;">Total Vendas</th>
+                    <th style="text-align: right;">XP Total</th>
+                </tr>
+            </thead>
+            <tbody id="rankingTableBody">
+                <!-- Linhas geradas via JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/ranking.js"></script>
+<script>
+    app.requireAuth();
+    document.getElementById('nav-ranking').classList.add('active');
+</script>
+{% endblock %}

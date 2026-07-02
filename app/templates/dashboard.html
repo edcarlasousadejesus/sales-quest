@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Sales Quest{% endblock %}
+{% block content %}
+<div class="page-header flex-between">
+    <div>
+        <h1>Dashboard</h1>
+        <p class="page-subtitle">Resumo do seu desempenho e atividades recentes.</p>
+    </div>
+    <div class="flex-gap">
+        <a href="/sales" class="btn btn-primary">
+            <i class='bx bx-plus'></i> Nova Venda
+        </a>
+    </div>
+</div>
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon text-primary-color">
+            <i class='bx bx-money'></i>
+        </div>
+        <div class="stat-value" id="stat-valor-vendas">R$ 0,00</div>
+        <div class="stat-label">Total em Vendas</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon text-accent">
+            <i class='bx bx-shopping-bag'></i>
+        </div>
+        <div class="stat-value" id="stat-total-vendas">0</div>
+        <div class="stat-label">Vendas Realizadas</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon text-gold">
+            <i class='bx bx-star'></i>
+        </div>
+        <div class="stat-value" id="stat-xp">0</div>
+        <div class="stat-label">XP Acumulado</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon text-cyan">
+            <i class='bx bx-trophy'></i>
+        </div>
+        <div class="stat-value" id="stat-posicao">-</div>
+        <div class="stat-label">Posição no Ranking</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon text-pink">
+            <i class='bx bx-group'></i>
+        </div>
+        <div class="stat-value" id="stat-total-clientes">0</div>
+        <div class="stat-label">Clientes Ativos</div>
+    </div>
+</div>
+<!-- AI Recommendations -->
+<div id="ai-recommendations-container" class="mb-2">
+    <!-- AI cards will be inserted here -->
+</div>
+<div class="grid-2">
+    <!-- Gráfico de Vendas -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Vendas (Últimos 7 Dias)</h3>
+        </div>
+        <div class="chart-container">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+    <!-- Nível e Progresso -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Seu Progresso</h3>
+        </div>
+
+        <div class="flex-center mt-2 mb-2" style="flex-direction: column;">
+            <div style="font-size: 4rem;" id="dash-avatar">🧑‍💼</div>
+            <h2 class="mt-1" id="dash-nome">Carregando...</h2>
+            <div class="text-gold fw-700 mt-1" id="dash-titulo">Iniciante</div>
+        </div>
+        <div class="flex-between mb-1 text-secondary" style="font-size: 0.9rem;">
+            <span>Nível <span id="dash-nivel" class="text-primary-color fw-700">1</span></span>
+            <span id="dash-xp-text">0 / 100 XP</span>
+        </div>
+        <div class="xp-bar-container mb-2">
+            <div class="xp-bar" id="dash-xp-bar" style="width: 0%"></div>
+        </div>
+        <h3 class="card-title mt-2 mb-1">Últimos Ganhos de XP</h3>
+        <div id="xp-history-list">
+            <div class="text-center text-muted" style="padding: 1rem;">Nenhum registro recente</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/dashboard.js"></script>
+<script>
+    app.requireAuth();
+    // Marca o menu ativo
+    document.getElementById('nav-dashboard').classList.add('active');
+</script>
+{% endblock %}

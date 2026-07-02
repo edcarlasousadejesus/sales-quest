@@ -1,0 +1,47 @@
+<button class="mobile-menu-btn" onclick="toggleSidebar()">
+    <i class='bx bx-menu'></i>
+</button>
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <h2><span class="logo-icon">🚀</span> Sales Quest</h2>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section-title">Menu Principal</div>
+        <a href="/dashboard" class="nav-item" id="nav-dashboard">
+            <i class='bx bxs-dashboard nav-icon'></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/sales" class="nav-item" id="nav-sales">
+            <i class='bx bxs-shopping-bag nav-icon'></i>
+            <span>Vendas</span>
+        </a>
+        <a href="/clients" class="nav-item" id="nav-clients">
+            <i class='bx bxs-group nav-icon'></i>
+            <span>Clientes</span>
+        </a>
+        <div class="nav-section-title">Gamificação</div>
+        <a href="/ranking" class="nav-item" id="nav-ranking">
+            <i class='bx bxs-trophy nav-icon'></i>
+            <span>Ranking</span>
+        </a>
+        <a href="/missions" class="nav-item" id="nav-missions">
+            <i class='bx bxs-flag-alt nav-icon'></i>
+            <span>Missões</span>
+            <span class="nav-badge" id="sidebar-missions-badge" style="display:none;">!</span>
+        </a>
+        <a href="/achievements" class="nav-item" id="nav-achievements">
+            <i class='bx bxs-medal nav-icon'></i>
+            <span>Conquistas</span>
+        </a>
+    </nav>
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar" id="sidebar-avatar">🧑‍💼</div>
+        <div class="sidebar-user-info">
+            <div class="name" id="sidebar-name">Carregando...</div>
+            <div class="level" id="sidebar-level">Nível -</div>
+        </div>
+        <button class="sidebar-logout" onclick="auth.logout()" title="Sair">
+            <i class='bx bx-log-out'></i>
+        </button>
+    </div>
+</aside>

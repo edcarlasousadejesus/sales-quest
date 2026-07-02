@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sales Quest</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-hero">
+            <div class="auth-hero-content">
+                <div class="auth-hero-logo">🚀</div>
+                <h1>Sales Quest</h1>
+                <p>A plataforma definitiva para gerenciar suas vendas, completar missões e subir no ranking. Transforme metas em conquistas!</p>
+            </div>
+        </div>
+        <div class="auth-form-container">
+            <div class="auth-form-box">
+                <h2>Bem-vindo de volta!</h2>
+                <p class="subtitle">Faça login para continuar sua jornada.</p>
+                <form id="loginForm" onsubmit="auth.login(event)">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-envelope input-icon'></i>
+                            <input type="email" id="email" class="form-input" placeholder="seu@email.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-lock-alt input-icon'></i>
+                            <input type="password" id="senha" class="form-input" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full mt-2" id="loginBtn">
+                        <i class='bx bx-log-in'></i> Entrar
+                    </button>
+                </form>
+                <div class="text-center mt-2">
+                    <p class="text-secondary" style="font-size: 0.9rem;">
+                        Não tem uma conta? <a href="/register">Cadastre-se</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'toast.html' %}
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script>
+        // Redireciona se já estiver logado
+        if (app.isAuthenticated()) {
+            window.location.href = '/dashboard';
+        }
+    </script>
+</body>
+</html>
