@@ -66,7 +66,13 @@ const app = {
             const avatarEl = document.getElementById('sidebar-avatar');
             if (nameEl) nameEl.textContent = data.nome;
             if (levelEl) levelEl.textContent = `Nível ${data.nivel} • ${data.level_info.titulo}`;
-            if (avatarEl) avatarEl.textContent = data.avatar || '🧑‍💼';
+            if (avatarEl) {
+                if (data.avatar && data.avatar.startsWith('/')) {
+                    avatarEl.innerHTML = `<img src="${data.avatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                } else {
+                    avatarEl.textContent = data.avatar || '🧑‍💼';
+                }
+            }
         } catch (e) {
             console.error('Erro ao carregar usuário sidebar', e);
         }
@@ -94,8 +100,37 @@ const app = {
             toast.style.animation = 'slide-out-right 0.4s ease forwards';
             setTimeout(() => toast.remove(), 400);
         }, 4000);
+    },
+
+    // ─── Upload Avatar ───
+    async uploadAvatar(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        try {
+            const token = localStorage.getItem('sq_token');
+            const response = await fetch('/api/upload-avatar', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (response.ok) {
+                this.toast('Sucesso', 'Foto de perfil atualizada!', 'success');
+                this.loadUserSidebar();
+                return data.avatar;
+            } else {
+                this.toast('Erro', data.detail || 'Falha ao enviar foto.', 'error');
+            }
+        } catch (error) {
+            console.error('Erro de upload', error);
+            this.toast('Erro', 'Falha na comunicação com servidor.', 'error');
+        }
+        return null;
     }
 };
+
 // ─── Sidebar Toggle ───
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');

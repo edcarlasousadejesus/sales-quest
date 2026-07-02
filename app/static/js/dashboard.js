@@ -165,3 +165,32 @@ async function loadXPHistory() {
         console.error("Erro no histórico XP", e);
     }
 }
+async function loadAIRecommendations() {
+    try {
+        const data = await app.api('/ai/recommendations');
+        const container = document.getElementById('aiRecommendations');
+
+        if (!container) return;
+
+        if (!data.recommendations || data.recommendations.length === 0) {
+            container.innerHTML = `
+                <div class="ai-card">
+                    <h3>🤖 Nenhuma recomendação no momento</h3>
+                    <p>Continue cadastrando vendas e clientes para a IA gerar novos insights.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = data.recommendations.map(rec => `
+            <div class="ai-card ${rec.tipo}">
+                <h3>${rec.icone} ${rec.titulo}</h3>
+                <p>${rec.mensagem}</p>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Erro ao carregar recomendações de IA:', error);
+    }
+}
+
+loadAIRecommendations();

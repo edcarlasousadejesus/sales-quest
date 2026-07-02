@@ -5,7 +5,7 @@ Rotas de API (auth, vendas, clientes, gamificação, IA) + páginas Jinja2.
 import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from fastapi import FastAPI, Depends, HTTPException, status, Request, Query
+from fastapi import FastAPI, Depends, HTTPException, status, Request, Query, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -14,6 +14,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, distinct
 from datetime import datetime, timedelta, timezone
 from contextlib import asynccontextmanager
+import uuid
+import shutil
 from database import get_db, init_db
 from models import User, Client, Sale, Mission, UserMission, Achievement, UserAchievement, XPLog
 from schemas import (
@@ -172,6 +174,40 @@ def api_me(user: User = Depends(get_current_user), db: Session = Depends(get_db)
         "total_clientes": total_clientes,
         "valor_vendas": round(valor_vendas, 2),
     }
+
+
+@app.post("/api/upload-avatar")
+async def api_upload_avatar(
+    file: UploadFile = File(...),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="O arquivo deve ser uma imagem.")
+
+    # Cria nome de arquivo único
+    ext = file.filename.split(".")[-1]
+    filename = f"{user.id}_{uuid.uuid4().hex[:8]}.{ext}"
+    upload_dir = os.path.join(BASE_DIR, "static", "uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    file_path = os.path.join(upload_dir, filename)
+
+    # Remove avatar antigo se for um arquivo local
+    if user.avatar and user.avatar.startswith("/static/uploads/"):
+        old_file = os.path.join(BASE_DIR, user.avatar.lstrip("/"))
+        if os.path.exists(old_file):
+            os.remove(old_file)
+
+    # Salva o novo arquivo
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # Atualiza banco
+    url_path = f"/static/uploads/{filename}"
+    user.avatar = url_path
+    db.commit()
+
+    return {"message": "Foto atualizada com sucesso.", "avatar": url_path}
 # ═════════════════════════════════════════════
 # API: CLIENTES
 # ═════════════════════════════════════════════

@@ -19,7 +19,7 @@ class User(Base):
     nome = Column(String(100), nullable=False)
     email = Column(String(150), unique=True, nullable=False, index=True)
     senha_hash = Column(String(255), nullable=False)
-    avatar = Column(String(10), default="🧑‍💼")  # Emoji avatar
+    avatar = Column(String(255), default="🧑‍💼")  # Emoji ou URL da imagem
     cargo = Column(String(100), default="Vendedor")
     xp_total = Column(Integer, default=0)
     nivel = Column(Integer, default=1)
