@@ -194,3 +194,26 @@ async function loadAIRecommendations() {
 }
 
 loadAIRecommendations();
+async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const messages = document.getElementById('chatMessages');
+
+    const text = input.value.trim();
+    if (!text) return;
+
+    messages.innerHTML += `<p><strong>Você:</strong> ${text}</p>`;
+    input.value = '';
+
+    try {
+        const data = await app.api('/ai/chat', {
+            method: 'POST',
+            body: JSON.stringify({ message: text })
+        });
+
+        messages.innerHTML += `<p><strong>IA:</strong> ${data.resposta}</p>`;
+    } catch (error) {
+        messages.innerHTML += `<p><strong>IA:</strong> Erro ao consultar a IA.</p>`;
+    }
+
+    messages.scrollTop = messages.scrollHeight;
+}

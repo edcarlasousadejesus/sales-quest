@@ -33,7 +33,7 @@ from gamification import (
     grant_xp, update_missions_progress, check_achievements,
     assign_missions, get_level_title,
 )
-from ai_engine import get_recommendations
+from ai_engine import get_recommendations, get_chatbot_ai_response
 # ─────────────────────────────────────────────
 # App Setup
 # ─────────────────────────────────────────────
@@ -588,6 +588,14 @@ def api_ai_recommendations(
 ):
     recs = get_recommendations(db, user)
     return {"recommendations": recs}
+@app.post("/api/ai/chat")
+def api_ai_chat(
+    data: dict,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    message = data.get("message", "")
+    return get_chatbot_ai_response(db, user, message)
 # ─────────────────────────────────────────────
 # Run
 # ─────────────────────────────────────────────

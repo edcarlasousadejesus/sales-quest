@@ -2,6 +2,8 @@
 Sales Quest — Motor de IA para Recomendações Personalizadas.
 Análise baseada em regras e estatísticas dos dados de vendas.
 """
+import os
+from openai import OpenAI
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from sqlalchemy import func, distinct
@@ -157,3 +159,38 @@ def get_recommendations(db: Session, user: User) -> list:
         })
     # Limita a 5 recomendações
     return recommendations[:5]
+
+
+def get_chatbot_ai_response(db: Session, user: User, message: str) -> dict:
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    total_vendas = db.query(func.count(Sale.id)).filter(Sale.user_id == user.id).scalar() or 0
+    total_clientes = db.query(func.count(Client.id)).filter(Client.user_id == user.id,
+                                                            Client.ativo == True).scalar() or 0
+    valor_total = db.query(func.sum(Sale.valor * Sale.quantidade)).filter(Sale.user_id == user.id).scalar() or 0
+
+    contexto = f"""
+    Usuário: {user.nome}
+    Nível: {user.nivel}
+    XP: {user.xp_total}
+    Total de vendas: {total_vendas}
+    Clientes ativos: {total_clientes}
+    Valor total vendido: R$ {valor_total:.2f}
+    """
+
+    resposta = client.responses.create(
+        model="gpt-4.1-mini",
+        input=f"""
+        Você é o Assistente IA do Sales Quest.
+        Responda em português do Brasil.
+        Seja breve, prático e focado em vendas.
+
+        Dados do usuário:
+        {contexto}
+
+        Pergunta do usuário:
+        {message}
+        """
+    )
+
+    return {"resposta": resposta.output_text}

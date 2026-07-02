@@ -58,6 +58,18 @@
 <!-- AI Recommendations -->
 <div id="ai-recommendations-container" class="mb-2">
     <!-- AI cards will be inserted here -->
+    <section class="card">
+    <h2>🤖 Assistente IA</h2>
+
+    <div id="chatMessages" style="height:220px; overflow-y:auto; border:1px solid #ddd; padding:10px; border-radius:8px; margin-bottom:10px;">
+        <p><strong>IA:</strong> Olá! Pergunte algo sobre suas vendas, clientes, XP ou metas.</p>
+    </div>
+
+    <div style="display:flex; gap:8px;">
+        <input id="chatInput" type="text" placeholder="Digite sua pergunta..." class="form-input">
+        <button onclick="sendChatMessage()" class="btn btn-primary">Enviar</button>
+    </div>
+</section>
 </div>
 <div class="grid-2">
     <!-- Gráfico de Vendas -->
